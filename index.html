@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="it"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Jarvis Spese</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -14,7 +14,7 @@
 :root{--bg:#F1F4F9;--cd:#fff;--tx:#0F1B33;--t2:#5E6C84;--bd:#E4E9F1;--ac:#14213D;--on:#fff;--hz:#FFB4A5;--sg:#DCE3EE;--ok:#1B7F52;--okb:#DDF3E8;--wa:#8A5A00;--wab:#FCEFCF;--ko:#B3361F;--kob:#FCE0DA;--fo:#14213D;--fw:#E0A22A;--fk:#D9482E;--c1:#0E9F7E;--c2:#6D5BD0;--c3:#2F6FDE;color-scheme:light dark}
 @media(prefers-color-scheme:dark){:root{--bg:#0B111D;--cd:#151E2F;--tx:#E8EEF8;--t2:#8E9BB3;--bd:#232F45;--ac:#A9C0F5;--on:#0B111D;--hz:#B3261E;--sg:#26324A;--ok:#6FD6A0;--okb:#143528;--wa:#EDC565;--wab:#3A2F10;--ko:#F4A08F;--kob:#411F19;--fo:#A9C0F5;--fw:#E8B64A;--fk:#E8735C;--c1:#3DD3A8;--c2:#A99CF7;--c3:#7FA8FF}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;touch-action:manipulation;overscroll-behavior:none}input,textarea,select{font-size:16px!important}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,system-ui,"Helvetica Neue",sans-serif;font-variant-numeric:tabular-nums;padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 main{max-width:520px;margin:0 auto;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 16px}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -78,7 +78,7 @@ nav button.on{color:var(--ac)}
 nav .fab{width:52px;height:52px;border-radius:17px;background:var(--ac);color:var(--on);min-width:52px;padding:0;justify-content:center;margin-top:-8px}
 button.p,button.s,button.dg{font-weight:600;font-size:16px;border-radius:14px;padding:14px;border:0;width:100%;margin-top:8px}
 button.p{background:var(--ac);color:var(--on)}button.s{background:var(--sg);color:var(--tx)}button.dg{background:var(--kob);color:var(--ko)}
-input[type=file],textarea{width:100%;font:16px inherit;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);margin:6px 0 10px}
+input[type=file],textarea{width:100%;font-family:inherit;font-size:16px;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);margin:6px 0 10px}
 #sh{position:fixed;inset:0;background:rgba(5,10,20,.5);z-index:10;display:none;align-items:flex-end}
 #sh.on{display:flex}
 #shc{background:var(--bg);width:100%;max-width:520px;margin:0 auto;border-radius:24px 24px 0 0;max-height:94dvh;overflow:auto;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
@@ -101,7 +101,7 @@ input[type=file],textarea{width:100%;font:16px inherit;padding:12px;border-radiu
 .fr{display:flex;align-items:center;gap:12px;padding:0 14px;min-height:48px;border-bottom:1px solid var(--bd);position:relative}
 .fr:last-child{border:0}
 .fr>span{font-size:15px;color:var(--t2);min-width:80px}
-.fr input[type=text]{border:0;background:transparent;text-align:right;flex:1;font:16px inherit;color:var(--tx);padding:12px 0;min-width:0;outline:0}
+.fr input[type=text]{border:0;background:transparent;text-align:right;flex:1;font-family:inherit;font-size:16px;color:var(--tx);padding:12px 0;min-width:0;outline:0}
 .fr .pill{margin-left:auto;font-weight:600;color:var(--ac);position:relative;padding:12px 0}
 .fr .pill input{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px}
 .fr .stp{margin-left:auto;display:flex;align-items:center;gap:14px}
