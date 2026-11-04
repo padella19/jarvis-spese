@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Spese</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jarvis">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0F6E56">
+<style>
+:root{--bg:#eef1ef;--cd:#fff;--tx:#14201c;--t2:#5d6b66;--bd:#dbe2de;--ac:#0F6E56;--ok:#3B6D11;--okb:#EAF3DE;--wa:#854F0B;--wab:#FAEEDA;--ko:#A32D2D;--kob:#FCEBEB;--fo:#639922;--fw:#EF9F27;--fk:#E24B4A;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1513;--cd:#19211e;--tx:#e9f0ed;--t2:#93a29c;--bd:#2a3531;--ac:#5DCAA5;--ok:#C0DD97;--okb:#27500A;--wa:#FAC775;--wab:#633806;--ko:#F7C1C1;--kob:#791F1F}}
+:root[data-theme="dark"]{--bg:#0f1513;--cd:#19211e;--tx:#e9f0ed;--t2:#93a29c;--bd:#2a3531;--ac:#5DCAA5;--ok:#C0DD97;--okb:#27500A;--wa:#FAC775;--wab:#633806;--ko:#F7C1C1;--kob:#791F1F}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,system-ui,"Helvetica Neue",sans-serif;padding-bottom:96px}
+main{max-width:520px;margin:0 auto;padding:16px}
+h1{font-size:26px;margin:4px 0 14px;font-weight:600;letter-spacing:-.02em}
+.c{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:10px}
+.l{font-size:13px;color:var(--t2)}
+.big{font-size:32px;font-weight:600;letter-spacing:-.02em;margin:2px 0 8px}
+.big small{font-size:15px;font-weight:400;color:var(--t2)}
+.bar{height:10px;border-radius:5px;background:var(--bg);overflow:hidden}
+.bar i{display:block;height:100%}
+.f-ok{background:var(--fo)}.f-wa{background:var(--fw)}.f-ko{background:var(--fk)}
+.bd{font-size:12px;padding:2px 9px;border-radius:9px;float:right}
+.b-ok{background:var(--okb);color:var(--ok)}.b-wa{background:var(--wab);color:var(--wa)}.b-ko{background:var(--kob);color:var(--ko)}
+.g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.r{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--bd)}
+.r:last-child{border:0}.r b{font-weight:600;text-align:right}
+h3{font-size:13px;color:var(--t2);font-weight:500;margin:16px 4px 6px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--cd);border-top:1px solid var(--bd);display:flex;justify-content:space-around;padding:6px 0 calc(8px + env(safe-area-inset-bottom,0px))}
+nav button{background:none;border:0;color:var(--t2);font:12px inherit;padding:4px 10px;min-width:56px}
+nav button span{display:block;font-size:22px}
+nav button.on{color:var(--ac)}
+.fab{width:56px;height:56px;border-radius:50%;background:var(--ac);color:var(--bg)!important;font-size:30px!important;margin-top:-26px;padding:0!important;min-width:56px}
+button.p,button.s{font:600 16px inherit;border-radius:12px;padding:13px;border:0;width:100%;margin-top:8px}
+button.p{background:var(--ac);color:var(--bg)}button.s{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+button.d{background:none;border:0;color:var(--ko);font-size:13px}
+input,select,textarea{width:100%;font:16px inherit;padding:12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);margin:4px 0 10px}
+.ch{display:flex;gap:8px;margin-bottom:10px}
+.ch button{flex:1;padding:10px 4px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:13px}
+.ch button.on{border-color:var(--ac);background:var(--cd);box-shadow:0 0 0 1px var(--ac)}
+#sh{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9;align-items:flex-end}
+#sh>div{background:var(--cd);width:100%;max-width:520px;margin:0 auto;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto}
+.h{display:none}
+</style></head><body>
+<main id="v"></main>
+<div id="sh"><div id="shc"></div></div>
+<nav id="nv"></nav>
+<script>
+const BUDGET=170,MESI=["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+const CATS=[{n:"Treno/Trasporti",i:"🚆",b:0,c:0,d:0,l:"Tratta (es. Milano-Roma)"},{n:"Albergo",i:"🏨",b:1,c:1,d:1,l:"Nome albergo"},{n:"Pasto/Ristorante",i:"🍽",b:1,c:1,d:1,l:"Nome ristorante"}];
+let S={spese:[],ric:[]},tab="home",mode="spesa",ci=1,mk0=null,pend=null;
+const $=id=>document.getElementById(id),p2=n=>String(n).padStart(2,"0");
+const fd=d=>p2(d.getDate())+"/"+p2(d.getMonth()+1)+"/"+d.getFullYear();
+const pd=s=>{const[g,m,a]=s.split("/").map(Number);return new Date(a,m-1,g)};
+const mk=s=>{const x=s.split("/");return x[2]+"-"+x[1]},mkd=d=>d.getFullYear()+"-"+p2(d.getMonth()+1);
+const eur=n=>"€ "+n.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cat=n=>CATS.find(c=>c.n===n),isB=n=>!!(cat(n)&&cat(n).b),ico=n=>cat(n)?cat(n).i:"•";
+const sum=a=>a.reduce((x,r)=>x+r.imp,0),sp=k=>S.spese.filter(r=>mk(r.data)===k),totB=a=>sum(a.filter(r=>isB(r.cat)));
+const ri=k=>sum(S.ric.filter(r=>mk(r.data)===k)),rip=k=>{const[y,m]=k.split("-").map(Number);let t=0;for(let i=1;i<=24;i++){const q=mkd(new Date(y,m-1-i,1)),r=ri(q),s=sum(sp(q));if(r===0&&s===0)break;t+=r-s}return t};
+const wd=(y,m)=>{let c=0;for(let g=1;g<=new Date(y,m+1,0).getDate();g++){const w=new Date(y,m,g).getDay();if(w&&w<6)c++}return c};
+const wl=n=>{let c=0;for(let g=n.getDate()+1;g<=new Date(n.getFullYear(),n.getMonth()+1,0).getDate();g++){const w=new Date(n.getFullYear(),n.getMonth(),g).getDay();if(w&&w<6)c++}return c};
+const ymd=d=>d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate()),dy=v=>{const[y,m,g]=v.split("-").map(Number);return new Date(y,m-1,g)};
+const sg=r=>{const m=/sog:(\d\d\/\d\d\/\d{4})/.exec(r.desc||"");return m?m[1]:r.data};
+const vi=r=>{const m=/via:(\d\d\/\d\d\/\d{4})/.exec(r.desc||"");return m?m[1]:""};
+const isWk=s=>{const g=pd(s).getDay();return g>0&&g<6};
+function trip(k){const days={};let wk=0;S.spese.forEach(r=>{if(!isB(r.cat))return;const d=sg(r);if(k&&mk(d)!==k)return;if(isWk(d))(days[d]=days[d]||[]).push(r);else wk+=r.imp});
+const ds=Object.keys(days).sort((a,b)=>pd(a)-pd(b)),t=ds.reduce((x,d)=>x+sum(days[d]),0);return{days,ds,n:ds.length,speso:t,budget:BUDGET*ds.length,wk}}
+function pj(n){const T=trip(mkd(n)),t0=new Date(n.getFullYear(),n.getMonth(),n.getDate()),past=T.ds.filter(d=>pd(d)<=t0),s1=past.reduce((x,d)=>x+sum(T.days[d]),0),fut=T.n-past.length,m=past.length?s1/past.length:0;return{T,past:past.length,fut,m,proj:s1+fut*m}}
+function ricStima(n){const a=sp(mkd(n)),sal=ri(mkd(n))-sum(a),mt=sum(a)/n.getDate();if(sal<=0)return"cassa in negativo";if(mt<=0)return"—";const x=Math.floor(sal/mt),d=new Date(n);d.setDate(n.getDate()+x);return fd(d).slice(0,5)+" (tra "+x+" gg)"}
+function bcard(k){const T=trip(k),p=T.budget?Math.round(T.speso/T.budget*100):0;return T.n?`<div class="c"><span class="bd b-${col(p)}">${lab[col(p)]}</span><div class="l">Budget trasferte</div><div class="big" style="font-size:22px">${eur(T.speso)} <small>/ ${eur(T.budget)}</small></div>${bar(p)}<div class="l" style="margin-top:8px">${p}% · ${T.n} giorni di trasferta${T.wk>0?" · weekend fuori budget "+eur(T.wk):""}</div></div>`:""}
+const col=p=>p>100?"ko":p>85?"wa":"ok",lab={ok:"In budget",wa:"Attenzione",ko:"Sforato"};
+const bar=p=>`<div class="bar"><i class="f-${col(p)}" style="width:${Math.max(0,Math.min(100,p))}%"></i></div>`;
+const row=(a,b)=>`<div class="r"><span>${a}</span><b>${b}</b></div>`;
+const idb=()=>new Promise((s,j)=>{const r=indexedDB.open("jarvis",1);r.onupgradeneeded=()=>r.result.createObjectStore("k");r.onsuccess=()=>s(r.result);r.onerror=()=>j(r.error)});
+async function load(){try{const d=await idb();await new Promise(s=>{const q=d.transaction("k").objectStore("k").get("s");q.onsuccess=()=>{if(q.result)S=q.result;s()};q.onerror=s})}catch(e){}}
+async function save(){try{const d=await idb();d.transaction("k","readwrite").objectStore("k").put(S,"s")}catch(e){}}
+function home(){const n=new Date(),k=mkd(n),ts=fd(n),P=pj(n),T=P.T,isT=!!T.days[ts],oggi=isT?sum(T.days[ts]):0,pm=T.budget?Math.round(T.speso/T.budget*100):0,po=Math.round(oggi/BUDGET*100),a=sp(k),cassa=ri(k)-sum(a)+rip(k),A=trip(null),media=A.n?A.speso/A.n:0,t0=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+const nx=S.spese.filter(r=>(r.cat==="Albergo"&&pd(sg(r))>t0)||(vi(r)&&pd(vi(r))>=t0)).map(r=>({d:r.cat==="Albergo"?sg(r):vi(r),r})).sort((x,y)=>pd(x.d)-pd(y.d)).slice(0,6);
+const u=[...a].sort((x,y)=>pd(y.data)-pd(x.data)||Number(y.id)-Number(x.id))[0];
+const oc=isT?`<div class="c"><span class="bd b-${col(po)}">${lab[col(po)]}</span><div class="l">Oggi</div><div class="big">${eur(oggi)} <small>/ ${BUDGET}</small></div>${bar(po)}<div class="l" style="margin-top:8px">Residuo ${eur(BUDGET-oggi)} · ${po}%</div></div>`:`<div class="c"><div class="l">Oggi</div><div style="font-size:18px;margin:4px 0">${isWk(ts)?"Nessuna trasferta":"Weekend, fuori budget"}</div><div class="l">${isWk(ts)?"Il budget di "+BUDGET+" € parte con il primo pasto o albergo del giorno.":"Le spese del weekend non entrano nel budget."}</div></div>`;
+return`<p class="l" style="margin:0">${MESI[n.getMonth()]} ${n.getFullYear()}</p><h1>Jarvis Spese</h1>${oc}
+<div class="c"><span class="bd b-${col(pm)}">${lab[col(pm)]}</span><div class="l">Mese</div><div class="big" style="font-size:26px">${eur(T.speso)} <small>/ ${eur(T.budget)}</small></div>${bar(pm)}<div class="l" style="margin-top:8px">${pm}% · ${T.n} giorni di trasferta${T.wk>0?" · weekend "+eur(T.wk)+" fuori budget":""}</div>${P.past?`<div class="l" style="margin-top:4px">Proiezione ${eur(P.proj)} (${P.proj>=T.budget?"+":"-"}${eur(Math.abs(P.proj-T.budget))} vs budget)</div>`:""}</div>
+<div class="g"><div class="c"><div class="l">Cassa</div><b style="font-size:19px;color:${cassa>=0?"var(--ok)":"var(--ko)"}">${eur(cassa)}</b><div class="l" style="margin-top:4px">Ricarica: ${ricStima(n)}</div></div><div class="c"><div class="l">Media per giorno di trasferta</div><b style="font-size:19px">${eur(media)}</b></div></div>
+<div class="c"><div class="l">Prossime trasferte</div>${nx.length?nx.map(x=>`<div class="r" style="padding:6px 0"><span>${x.r.cat==="Albergo"?"🏨":"🚆"} ${x.d.slice(0,5)}</span><span style="text-align:right">${esc(x.r.nome||x.r.cat)}${x.r.citta?" · "+esc(x.r.citta):""}</span></div>`).join(""):"<div>Nessuna trasferta già prenotata.</div>"}</div>
+<div class="c"><div class="l">Ultima spesa</div>${u?`<div class="r" style="border:0;padding-bottom:0"><span>${ico(u.cat)} ${esc(u.nome||u.cat)}<br><span class="l">${esc(u.citta)} ${u.data}</span></span><b>${eur(u.imp)}</b></div>`:"<div>Nessuna spesa. Tocca + per iniziare.</div>"}</div>`}
+function stats(){const n=new Date(),k=mkd(n),P=pj(n),T=P.T,a=sp(k),A=trip(null);
+const pv=new Date(n.getFullYear(),n.getMonth()-1,1),Tp=trip(mkd(pv)),mp=Tp.n?Tp.speso/Tp.n:null;
+const vel=mp&&P.past?(P.m-mp)/mp*100:null,tr=Tp.speso>0&&T.speso>0?(T.speso-Tp.speso)/Tp.speso*100:null,dp=P.proj-T.budget,imp=P.fut>0?(T.budget-T.speso)/P.fut:null;
+const ov=X=>X.ds.filter(d=>sum(X.days[d])>BUDGET).length,dm=A.ds.map(d=>[d,sum(A.days[d])]).sort((x,y)=>y[1]-x[1])[0];
+const cs={},cm={};S.spese.forEach(r=>{if(!r.citta||!isB(r.cat)||!(r.imp>0))return;const d=sg(r),c=cs[r.citta]=cs[r.citta]||{t:0,d:new Set()};c.t+=r.imp;c.d.add(d);if(mk(d)===k)(cm[r.citta]=cm[r.citta]||new Set()).add(d)});
+const cv=Object.entries(cs).map(([c,v])=>[c,v.t/v.d.size,v.d.size]),car=[...cv].sort((x,y)=>y[1]-x[1]).slice(0,3),vis=[...cv].sort((x,y)=>y[2]-x[2]).slice(0,3),ctm=Object.entries(cm).sort((x,y)=>y[1].size-x[1].size)[0];
+const tt=sum(a.filter(r=>r.cat==="Treno/Trasporti")),th=sum(a.filter(r=>r.cat==="Albergo")),tp=sum(a.filter(r=>r.cat==="Pasto/Ristorante")),ts=tt+th+tp,pc=x=>ts?Math.round(x/ts*100):0;
+const pm={};S.spese.forEach(r=>{pm[mk(r.data)]=(pm[mk(r.data)]||0)+r.imp});const mt=Object.entries(pm).sort((x,y)=>y[1]-x[1])[0];
+const tm={};A.ds.forEach(d=>{tm[mk(d)]=(tm[mk(d)]||0)+1});const mtr=Object.entries(tm).sort((x,y)=>y[1]-x[1])[0],ml=m=>MESI[+m[0].slice(5)-1]+" "+m[0].slice(0,4);
+const rec=[...S.spese].sort((x,y)=>y.imp-x.imp)[0],avg=c=>{const q=S.spese.filter(r=>r.cat===c&&r.imp>0);return q.length?eur(sum(q)/q.length):"—"},sgn=x=>(x>=0?"+":"")+x.toFixed(1)+"%";
+const sb=(e,l,p)=>`<div class="l" style="margin-top:8px">${e} ${l} ${p}%</div>${bar(p)}`;
+return`<h1>Statistiche</h1><h3>Mese corrente</h3><div class="c">${row("Giorni di trasferta",T.n+" ("+P.past+" fatti, "+P.fut+" prenotati)")}${row("Media per giorno",P.past?eur(P.m):"—")}${row("Velocità vs "+MESI[pv.getMonth()],vel===null?"—":(vel>=10?"🔴 ":vel<=-10?"🟢 ":"🟡 ")+sgn(vel))}${row("Totale vs "+MESI[pv.getMonth()],tr===null?"—":(tr>=0?"📈 ":"📉 ")+sgn(tr))}${row("Giorni sforati",ov(T)+" su "+T.n)}${row("Città più visitata",ctm?esc(ctm[0])+" ("+ctm[1].size+" gg)":"—")}</div>
+<h3>Fine mese</h3><div class="c">${row("Proiezione",P.past?eur(P.proj):"—")}${row("Rispetto al budget",P.past?(dp>=0?"+":"-")+eur(Math.abs(dp))+(dp>=0?" ⚠️":" ✅"):"—")}${row("Budget implicito",imp===null?"Nessun giorno prenotato":eur(imp)+"/gg ("+P.fut+" gg)")}${row("Prossima ricarica",ricStima(n))}</div>
+<h3>Split spese (mese)</h3><div class="c">${sb("🚆","Trasporti",pc(tt))}${sb("🏨","Albergo",pc(th))}${sb("🍽","Pasti",pc(tp))}</div>
+<h3>Città</h3><div class="c"><div class="l">Più care (media per giorno di visita)</div>${car.length?car.map((t,i)=>row((i+1)+". "+esc(t[0]),eur(t[1])+"/gg")).join(""):"Dati insufficienti."}<div class="l" style="margin-top:10px">Più visitate (giorni, storico)</div>${vis.length?vis.map((t,i)=>row((i+1)+". "+esc(t[0]),t[2]+" gg")).join(""):"Dati insufficienti."}</div>
+<h3>Storico e record</h3><div class="c">${row("Mese più costoso",mt?ml(mt)+": "+eur(mt[1]):"—")}${row("Mese con più trasferte",mtr?ml(mtr)+": "+mtr[1]+" gg":"—")}${row("Giorno più caro",dm?dm[0]+": "+eur(dm[1]):"—")}${row("Record singola spesa",rec?eur(rec.imp)+" · "+esc(rec.cat)+(rec.citta?", "+esc(rec.citta):""):"—")}${row("Costo medio notte",avg("Albergo"))}${row("Costo medio pasto",avg("Pasto/Ristorante"))}${row("Giorni sforati (storico)",ov(A)+" su "+A.n)}</div>`}
+function storico(){if(mk0)return mese(mk0);const ks=[...new Set([...S.spese.map(r=>mk(r.data)),...S.ric.map(r=>mk(r.data))])].sort().reverse();
+return`<h1>Storico</h1>`+(ks.length?ks.map(k=>{const s=ri(k)-sum(sp(k));return`<div class="c" onclick="mk0='${k}';go('storico')"><div class="r" style="border:0;padding:0"><span>${MESI[+k.slice(5)-1]} ${k.slice(0,4)}<br><span class="l">Spese ${eur(sum(sp(k)))}</span></span><b style="color:${s>=0?"var(--ok)":"var(--ko)"}">${s>=0?"+":""}${eur(s)}</b></div></div>`}).join(""):`<div class="c">Ancora nessun dato. Aggiungi una spesa con + oppure importa i tuoi CSV da Opzioni.</div>`)}
+function mese(k){const a=sp(k).sort((x,y)=>pd(y.data)-pd(x.data)||Number(y.id)-Number(x.id)),rs=S.ric.map((r,i)=>[r,i]).filter(x=>mk(x[0].data)===k);
+const dl=(id,t)=>`<button class="d" onclick="del('${id}')">${pend===id?"Tocca per confermare":t}</button>`;
+return`<button class="s" style="width:auto;padding:8px 14px;margin:0 0 8px" onclick="mk0=null;go('storico')">← Mesi</button><h1>${MESI[+k.slice(5)-1]} ${k.slice(0,4)}</h1>${bcard(k)}<div class="c">${a.map(r=>`<div class="r"><span>${ico(r.cat)} ${esc(r.nome||r.cat)}<br><span class="l">${r.data}${r.citta?" · "+esc(r.citta):""}${sg(r)!==r.data?" · notte "+sg(r).slice(0,5):""}${vi(r)?" · viaggio "+vi(r).slice(0,5):""}</span></span><span style="text-align:right"><b>${eur(r.imp)}</b><br>${dl("s"+r.id,"Elimina")}</span></div>`).join("")||"Nessuna spesa."}</div>
+${rs.length?`<h3>Ricariche</h3><div class="c">${rs.map(([r,i])=>`<div class="r"><span>💳 ${esc(r.note)}<br><span class="l">${r.data}</span></span><span style="text-align:right"><b>${eur(r.imp)}</b><br>${dl("r"+i,"Elimina")}</span></div>`).join("")}</div>`:""}`}
+function del(id){if(pend!==id){pend=id;return go(tab)}if(id[0]==="s")S.spese=S.spese.filter(r=>"s"+r.id!==id);else S.ric.splice(+id.slice(1),1);pend=null;save();go(tab)}
+function opz(){return`<h1>Opzioni</h1><div class="c"><b>Importa CSV</b><p class="l">Scegli Note_Spese e Ricariche (anche più file insieme). I duplicati vengono saltati.</p><input type="file" id="fi" accept=".csv,.txt,text/csv,text/plain" multiple><div id="im" class="l"></div></div>
+<div class="c"><b>Esporta CSV</b><p class="l">Stesso formato dello script. Un unico file con tutto lo storico.</p><button class="p" onclick="exp('s')">Esporta spese</button><button class="s" onclick="exp('r')">Esporta ricariche</button><textarea id="ex" class="h" rows="6" readonly></textarea></div>
+<div class="c"><b>Cancella tutti i dati</b><button class="d" onclick="del('all')">${pend==="all"?"Tocca per confermare":"Cancella tutto"}</button></div>`}
+const _del=del;del=function(id){if(id==="all"){if(pend!=="all"){pend="all";return go(tab)}S={spese:[],ric:[]};pend=null;save();return go(tab)}_del(id)};
+const ND=(s,nm)=>{const x=(s||"").trim().split(/[\/\-.]/).map(Number);let g,m,a;if(x.length===3&&x.every(n=>n>0)){if(x[0]>999){a=x[0];m=x[1];g=x[2]}else{g=x[0];m=x[1];a=x[2]<100?2000+x[2]:x[2]}}else{const n=(nm||"").toLowerCase(),mi=MESI.findIndex(z=>n.includes(z.toLowerCase())),ym=n.match(/20\d\d/);if(mi<0||!ym)return(s||"").trim();g=1;m=mi+1;a=+ym[0]}return p2(g)+"/"+p2(m)+"/"+a};
+function imp(t,nm){const L=t.split(/\r?\n/).filter(x=>x.trim()),h=(L[0]||"").replace(/^\uFEFF/,"");let a=0,b=0;const hl=h.toLowerCase().trim(),n=(nm||"").toLowerCase(),isR=!hl.startsWith("id;")&&(hl.startsWith("data;")||n.includes("ricariche")),isS=!isR&&(hl.startsWith("id;")||n.includes("spese"));
+if(isS){const nd=s=>ND(s,nm),h32=s=>{let x=0;for(const ch of s)x=(x*31+ch.charCodeAt(0))|0;return"x"+(x>>>0).toString(36)},key=r=>[r.id,r.data,r.imp.toFixed(2),r.cat].join("|"),have=new Set(S.spese.map(key));L.slice(1).forEach(l=>{const c=l.split(";");if(!c[1])return;const o={data:nd(c[1]),cat:(c[2]||"").trim(),citta:c[3]||"",nome:c[4]||"",imp:parseFloat((c[5]||"").replace(",","."))||0,desc:c[6]||""};o.id=(c[0]||"").trim()||h32([o.data,o.cat,o.imp.toFixed(2),o.nome].join("|"));if(have.has(key(o)))return;have.add(key(o));S.spese.push(o);a++})}
+else if(isR){const key=r=>[r.data,r.imp.toFixed(2),r.note].join("|"),ex={},seen={};S.ric.forEach(r=>{ex[key(r)]=(ex[key(r)]||0)+1});L.slice(1).forEach(l=>{const c=l.split(";"),o={data:ND(c[0],nm),imp:parseFloat((c[1]||"").replace(",","."))||0,note:c[2]||""};if(!o.data)return;const q=key(o);seen[q]=(seen[q]||0)+1;if(seen[q]<=(ex[q]||0))return;S.ric.push(o);b++})}
+else return null;
+return[a,b]}
+async function onImp(e){let A=0,B=0,o=[];for(const f of e.target.files){const tx=await f.text(),r=imp(tx,f.name);if(!r){o.push("⚠️ "+esc(f.name)+": "+(tx.trim()?"non riconosciuto, inizia con «"+esc(tx.slice(0,40))+"»":"file vuoto, forse non ancora scaricato da iCloud"));continue}A+=r[0];B+=r[1];o.push(esc(f.name)+": "+r[0]+" spese, "+r[1]+" ricariche nuove")}save();$("im").innerHTML=o.join("<br>")+"<br><b>Totale: "+A+" spese e "+B+" ricariche importate.</b>"}
+async function exp(t){const txt=t==="s"?"ID;Data;Categoria;Città;Nome;Importo;Descrizione\n"+S.spese.map(r=>[r.id,r.data,r.cat,r.citta,r.nome,r.imp.toFixed(2),r.desc].join(";")).join("\n")+"\n":"Data;Importo;Note\n"+S.ric.map(r=>[r.data,r.imp.toFixed(2),r.note].join(";")).join("\n")+"\n";
+const nm=t==="s"?"Note_Spese_tutto.csv":"Ricariche_tutto.csv";
+try{const f=new File([txt],nm,{type:"text/csv"});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}}catch(e){if(e&&e.name==="AbortError")return}
+const x=$("ex");x.className="";x.value=txt;x.select();try{await navigator.clipboard.writeText(txt)}catch(e){}}
+function sheet(){const c=CATS[ci],R=mode==="ric",td=ymd(new Date()),H=!R&&ci===1;
+$("shc").innerHTML=`<div class="ch"><button onclick="mode='spesa';sheet()" class="${R?"":"on"}">Spesa</button><button onclick="mode='ric';sheet()" class="${R?"on":""}">Ricarica</button></div>
+${R?"":`<div class="ch">${CATS.map((x,i)=>`<button class="${i===ci?"on":""}" onclick="ci=${i};sheet()">${x.i}<br>${x.n.split("/")[0]}</button>`).join("")}</div>`}
+${!R&&c.c?`<label class="l">Città</label><input id="fcit" placeholder="Milano" autocapitalize="words">`:""}
+<label class="l">${R?"Nota":c.l}</label><input id="fn" ${R?'value="Ricarica"':""}>
+<label class="l">${H?"Importo totale €":"Importo €"}</label><input id="fi2" inputmode="decimal" placeholder="0,00">
+${!R&&ci===0?`<label class="l">Data del viaggio (facoltativa)</label><input id="fv" type="date">`:`<label class="l">${H?"Data pagamento":"Data"}</label><input id="fdt" type="date" value="${td}" max="${td}">`}
+${H?`<label class="l">Data soggiorno (prima notte)</label><input id="fsg" type="date" value="${td}"><label class="l">Notti</label><input id="fnt" type="number" min="1" max="14" value="1" inputmode="numeric"><div class="l" style="margin-bottom:8px">Il budget segue le notti del soggiorno; l'importo viene diviso tra le notti.</div>`:""}
+<div id="er" class="l" style="color:var(--ko)"></div><button class="p" onclick="add()">Salva</button><button class="s" onclick="shut()">Annulla</button>`;
+$("sh").style.display="flex"}
+function shut(){$("sh").style.display="none"}
+function add(){const im=parseFloat($("fi2").value.replace(",","."));if(!(im>0)){$("er").textContent="Inserisci un importo valido.";return}
+const cl=s=>s.replace(/;/g,",").trim(),nid=()=>Date.now().toString()+Math.floor(Math.random()*900+100);
+if(mode==="ric")S.ric.push({data:fd(dy($("fdt").value)),imp:im,note:cl($("fn").value)||"Ricarica"});
+else{const c=CATS[ci],cit=c.c?cl($("fcit").value):"",nm=cl($("fn").value);
+if(ci===0){const v=$("fv").value;S.spese.push({id:nid(),data:fd(new Date()),cat:c.n,citta:"",nome:nm,imp:im,desc:v?"via:"+fd(dy(v)):""})}
+else if(ci===2)S.spese.push({id:nid(),data:fd(dy($("fdt").value)),cat:c.n,citta:cit,nome:nm,imp:im,desc:""});
+else{const pay=fd(dy($("fdt").value)),n=Math.max(1,Math.min(14,parseInt($("fnt").value)||1)),d0=dy($("fsg").value),each=Math.floor(im/n*100)/100;let rest=im;
+for(let i=0;i<n;i++){const d=new Date(d0);d.setDate(d0.getDate()+i);const v=i===n-1?Math.round(rest*100)/100:each;rest-=v;S.spese.push({id:nid(),data:pay,cat:c.n,citta:cit,nome:nm,imp:v,desc:"sog:"+fd(d)})}}}
+save();shut();go(tab)}
+const V={home,storico,stats,opz};
+function go(t){tab=t;if(t!=="storico")mk0=null;$("v").innerHTML=V[t]();scrollTo(0,0);
+$("nv").innerHTML=[["home","🏠","Home"],["storico","📅","Storico"],["+","+",""],["stats","📊","Stats"],["opz","⚙️","Opzioni"]].map(([k,i,l])=>k==="+"?`<button class="fab" aria-label="Aggiungi" onclick="sheet()">+</button>`:`<button class="${k===t?"on":""}" onclick="go('${k}')"><span>${i}</span>${l}</button>`).join("");
+if(t==="opz")$("fi").onchange=onImp}
+load().then(()=>go("home"));
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script></body></html>
